@@ -52,7 +52,7 @@ export class AvailabilitySearch {
     unitTypeId: number;
     checkIn: string;
     checkOut: string;
-    quantity: number;
+    quantity: number;     //no of flats
    
   }>();
 

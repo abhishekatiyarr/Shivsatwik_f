@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BookingService } from '../../Service/bookingservice';
 import { BookingIntent } from '../../Service/booking-intent';
 import { AuthService } from '../../Service/auth-service';
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-booking',
@@ -16,22 +17,27 @@ export class Booking implements OnInit {
 
   /* 👥 current guests (UI source of truth) */
   guests = signal<number>(1);
+  children = signal<number>(0); 
 
-  /* 📦 booking intent (from search page) */
+  /* 📦 booking intent */
   intent = computed(() => this.bookingIntent.intent());
 
-  /* 🔥 backend price preview (STRICT SHAPE) */
+  /* 🔥 backend price preview */
   backendPrice = signal<{
     baseAmount: number;
     extraGuests: number;
     extraGuestCharges: number;
     totalAmount: number;
+    maxGuestsAllowed: number;
+    totalGuests: number;
     warningMessage?: string | null;
   } | null>(null);
 
-  /* 🚫 block booking when warning present */
+  /* 🚫 booking block rule */
   isBookingBlocked = computed(() => {
-    return !!this.backendPrice()?.warningMessage;
+    const bp = this.backendPrice();
+    if (!bp) return true;
+    return bp.totalGuests > bp.maxGuestsAllowed;
   });
 
   constructor(
@@ -48,7 +54,11 @@ export class Booking implements OnInit {
       return;
     }
 
-    // 🔥 initial backend call
+    // 🔁 restore guests if coming back (OTP / login case)
+    if (intent.totalGuests) {
+      this.guests.set(intent.totalGuests);
+    }
+
     this.callPricePreview(this.guests());
   }
 
@@ -58,8 +68,15 @@ export class Booking implements OnInit {
     const newValue = Number(input.value);
     const prevValue = this.guests();
 
-    // ❌ block increase if backend warning present
-    if (newValue > prevValue && this.backendPrice()?.warningMessage) {
+    const bp = this.backendPrice();
+
+    // 🚫 hard stop at max guests
+    if (bp && newValue > bp.maxGuestsAllowed) {
+      input.value = String(prevValue);
+      return;
+    }
+
+    if (newValue < 1) {
       input.value = String(prevValue);
       return;
     }
@@ -68,12 +85,23 @@ export class Booking implements OnInit {
     this.callPricePreview(newValue);
   }
 
+
+  onChildrenChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  let value = Number(input.value);
+
+  if (value < 0) value = 0;
+  if (value > this.guests()) value = this.guests(); // safety
+
+  this.children.set(value);
+}
+
   /* 🔥 backend price preview */
   private callPricePreview(totalGuests: number) {
     const intent = this.intent();
     if (!intent) return;
 
-    const payload = {
+    const payload = {            // price preview ko bhejte h request k sath
       unitTypeId: intent.unitTypeId,
       quantity: intent.quantity,
       checkIn: intent.checkIn,
@@ -81,25 +109,19 @@ export class Booking implements OnInit {
       totalGuests,
     };
 
-    console.log('🔥 Price preview payload:', payload);
-
-    this.bookingService.previewPrice(payload).subscribe({
+    this.bookingService.previewPrice(payload).subscribe({               //response k liye h price-preview k 
       next: (res: any) => {
-        console.log('✅ Price preview response:', res);
-
-        // ✅ IMPORTANT: explicit mapping (NO [object Object])
         this.backendPrice.set({
           baseAmount: Number(res.baseAmount),
           extraGuests: Number(res.extraGuests),
           extraGuestCharges: Number(res.extraGuestCharges),
           totalAmount: Number(res.totalAmount),
+          maxGuestsAllowed: Number(res.maxGuestsAllowed),
+          totalGuests: Number(res.totalGuests),
           warningMessage: res.warningMessage ?? null,
         });
       },
-      error: () => {
-        console.log('❌ Price calculation failed');
-        this.backendPrice.set(null);
-      },
+      error: () => this.backendPrice.set(null),
     });
   }
 
@@ -109,31 +131,29 @@ export class Booking implements OnInit {
   });
 
   /* ✅ confirm booking */
-  confirmBooking() {
-    const intent = this.intent();
-    const price = this.backendPrice();
+ confirmBooking() {
+  const intent = this.intent();
+  const price = this.backendPrice();
 
-    if (!intent || !price) return;
+  if (!intent || !price) return;
+  if (price.totalGuests > price.maxGuestsAllowed) return;
 
-    if (price.warningMessage) {
-      console.warn('🚫 Booking blocked:', price.warningMessage);
-      return;
-    }
+  // ✅ sync guests into intent
+  this.bookingIntent.updateGuests(this.guests());
 
-    this.bookingService.createBooking({
-      unitTypeId: intent.unitTypeId,
-      quantity: intent.quantity,
-      checkIn: intent.checkIn,
-      checkOut: intent.checkOut,
-      totalGuests: this.guests(),
-      expectedAmount: price.totalAmount,
-    }).subscribe({
-      next: () => {
-        console.log('✅ Booking successful');
-        this.bookingIntent.clear();
-        this.router.navigate(['/payment']);
-      },
-      error: () => console.log('❌ Something went wrong'),
-    });
-  }
+  this.bookingService.createBooking({
+    unitTypeId: intent.unitTypeId,
+    quantity: intent.quantity,
+    checkIn: intent.checkIn,
+    checkOut: intent.checkOut,
+
+    TotalGuests: this.guests(),     // ✅ MATCHES BACKEND
+    Children: this.children(),      // ✅ MATCHES BACKEND
+
+    expectedAmount: price.totalAmount,
+  }).subscribe({
+    next: () => this.router.navigate(['/payment']),
+    error: () => console.log('❌ Booking failed'),
+  });
+}
 }

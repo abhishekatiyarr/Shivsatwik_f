@@ -29,9 +29,11 @@ export class BookingService {
     quantity: number;
     checkIn: string;
     checkOut: string;
-    totalGuests: number;
+    TotalGuests: number;
+   Children:number,
     expectedAmount: number;
   }) {
+    console.log('this i sthe main part which i need to see for error yrr from service ',body)
     return this.http.post(
       this.baseUrl,
       body

@@ -39,14 +39,20 @@ export class BookingIntent {
   /* =========================
      UPDATE GUESTS (from booking page)
   ========================== */
-  updateGuests(totalGuests: number) {
-    if (!this._intent) return;
+ updateGuests(totalGuests: number) {
+  const Guests=totalGuests;
+  if (!this._intent) return;
 
-    this._intent = {
-      ...this._intent,
-      totalGuests, // ✅ sync user-selected guests
-    };
-  }
+  this._intent = {
+    ...this._intent,
+    totalGuests,
+    Guests
+     // ✅ FINAL SOURCE OF TRUTH
+  };
+
+  console.log('from booking intent totalGuest',totalGuests)
+  console.log("from booking intent full intent  ", this._intent)
+}
 
   /* =========================
      READ INTENT

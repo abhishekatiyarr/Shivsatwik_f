@@ -1,10 +1,8 @@
 <section class="booking-page">
-
   <h2>Confirm Your Booking</h2>
 
   @if (intent()) {
     <div class="booking-card">
-
       <!-- Basic info -->
       <div class="row">
         <span>Room</span>
@@ -13,12 +11,12 @@
 
       <div class="row">
         <span>Check-in</span>
-        <strong>{{ intent()!.checkIn | date:'mediumDate' }}</strong>
+        <strong>{{ intent()!.checkIn | date: 'mediumDate' }}</strong>
       </div>
 
       <div class="row">
         <span>Check-out</span>
-        <strong>{{ intent()!.checkOut | date:'mediumDate' }}</strong>
+        <strong>{{ intent()!.checkOut | date: 'mediumDate' }}</strong>
       </div>
 
       <div class="row">
@@ -34,13 +32,19 @@
       <!-- Guests -->
       <div class="row">
         <label>Total Guests</label>
-        <input
-          type="number"
-          min="1"
-          [value]="guests()"
-          (input)="onGuestsChange($event)"
-        />
+        <input type="number" min="1" [value]="guests()" (input)="onGuestsChange($event)" />
       </div>
+
+      <div class="row children-row">
+        <label>Children</label>
+        <input type="number" min="0" [value]="children()" (input)="onChildrenChange($event)" />
+        <small class="children-hint"> 👶 Children should be below 5 years </small>
+      </div>
+
+      <!-- Capacity hint -->
+      @if (backendPrice()) {
+        <small class="hint"> Max guests allowed: {{ backendPrice()!.maxGuestsAllowed }} </small>
+      }
 
       <!-- Warning -->
       @if (backendPrice()?.warningMessage) {
@@ -53,10 +57,9 @@
 
       <div class="divider"></div>
 
-      <!-- Backend price -->
+      <!-- Price preview -->
       @if (backendPrice()) {
         <div class="price-preview-box">
-
           <h4>💰 Price Breakdown</h4>
 
           <div class="row">
@@ -71,9 +74,7 @@
 
           <div class="row extra">
             <span>Extra Guest Charges</span>
-            <strong class="red">
-              ₹{{ backendPrice()!.extraGuestCharges }}
-            </strong>
+            <strong class="red"> ₹{{ backendPrice()!.extraGuestCharges }} </strong>
           </div>
 
           <div class="divider"></div>
@@ -82,7 +83,6 @@
             <span>Total (Backend)</span>
             <strong>₹{{ backendPrice()!.totalAmount }}</strong>
           </div>
-
         </div>
       }
 
@@ -92,17 +92,11 @@
         <strong>₹{{ finalPayable() }}</strong>
       </div>
 
-      <button
-        class="confirm-btn"
-        (click)="confirmBooking()"
-        [disabled]="isBookingBlocked()"
-      >
+      <button class="confirm-btn" (click)="confirmBooking()" [disabled]="isBookingBlocked()">
         Confirm Booking ₹{{ finalPayable() }}
       </button>
-
     </div>
   } @else {
     <p>No booking data found.</p>
   }
-
 </section>

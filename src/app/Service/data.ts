@@ -32,7 +32,7 @@ export class Data {
     unitTypeId: number,
     checkIn: string,
     checkOut: string,
-    quantity: number
+    quantity: number    //no of flats user is enquiring
   ): Observable<AvailabilityResponse> {
 
     const params = new HttpParams()
