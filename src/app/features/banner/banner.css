@@ -1,0 +1,100 @@
+.banner {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  overflow: hidden;
+}
+
+/* Slides wrapper */
+.slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.8s ease-in-out;
+}
+
+/* Single slide */
+.slide {
+  min-width: 100%;
+  height: 100%;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+/* Overlay text */
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background: rgba(0,0,0,0.35);
+  padding: 20px 30px;
+  border-radius: 8px;
+}
+
+.overlay h1 {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.overlay p {
+  font-size: 16px;
+}
+
+/* Navigation arrows */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 32px;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* Dots */
+.dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: white;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .banner {
+    height: 50vh;
+  }
+
+  .overlay h1 {
+    font-size: 24px;
+  }
+}

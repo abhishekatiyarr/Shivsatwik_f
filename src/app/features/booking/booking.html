@@ -1,0 +1,108 @@
+<section class="booking-page">
+
+  <h2>Confirm Your Booking</h2>
+
+  @if (intent()) {
+    <div class="booking-card">
+
+      <!-- Basic info -->
+      <div class="row">
+        <span>Room</span>
+        <strong>{{ intent()!.title }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Check-in</span>
+        <strong>{{ intent()!.checkIn | date:'mediumDate' }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Check-out</span>
+        <strong>{{ intent()!.checkOut | date:'mediumDate' }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Nights</span>
+        <strong>{{ intent()!.Nights }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Flats</span>
+        <strong>{{ intent()!.quantity }}</strong>
+      </div>
+
+      <!-- Guests -->
+      <div class="row">
+        <label>Total Guests</label>
+        <input
+          type="number"
+          min="1"
+          [value]="guests()"
+          (input)="onGuestsChange($event)"
+        />
+      </div>
+
+      <!-- Warning -->
+      @if (backendPrice()?.warningMessage) {
+        <p class="warning">
+          ⚠️ {{ backendPrice()!.warningMessage }}
+          <br />
+          <small>Reduce guests to continue</small>
+        </p>
+      }
+
+      <div class="divider"></div>
+
+      <!-- Backend price -->
+      @if (backendPrice()) {
+        <div class="price-preview-box">
+
+          <h4>💰 Price Breakdown</h4>
+
+          <div class="row">
+            <span>Base Amount</span>
+            <strong>₹{{ backendPrice()!.baseAmount }}</strong>
+          </div>
+
+          <div class="row">
+            <span>Extra Guests</span>
+            <strong>{{ backendPrice()!.extraGuests }}</strong>
+          </div>
+
+          <div class="row extra">
+            <span>Extra Guest Charges</span>
+            <strong class="red">
+              ₹{{ backendPrice()!.extraGuestCharges }}
+            </strong>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row total">
+            <span>Total (Backend)</span>
+            <strong>₹{{ backendPrice()!.totalAmount }}</strong>
+          </div>
+
+        </div>
+      }
+
+      <!-- Final -->
+      <div class="row total final">
+        <span>Total Payable</span>
+        <strong>₹{{ finalPayable() }}</strong>
+      </div>
+
+      <button
+        class="confirm-btn"
+        (click)="confirmBooking()"
+        [disabled]="isBookingBlocked()"
+      >
+        Confirm Booking ₹{{ finalPayable() }}
+      </button>
+
+    </div>
+  } @else {
+    <p>No booking data found.</p>
+  }
+
+</section>

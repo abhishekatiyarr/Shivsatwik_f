@@ -1,0 +1,41 @@
+<section class="otp-page">
+
+  <h2>Verify your phone number</h2>
+
+  <input
+    type="tel"
+    placeholder="Enter phone number"
+    (input)="phone.set($any($event.target).value)"
+  />
+
+  <button (click)="sendOtp()" [disabled]="loading() || otpSent()">
+    Send OTP
+  </button>
+
+  @if (otpSent()) {
+    <div class="otp-input">
+      <input
+        type="text"
+        maxlength="6"
+        placeholder="Enter 6-digit OTP"
+        (input)="otp.set($any($event.target).value)"
+      />
+
+       <input
+        type="text"
+        maxlength="50"
+        placeholder="Enter your Name"
+        (input)="name.set($any($event.target).value)"
+      />
+
+      <button (click)="verifyOtp()" [disabled]="loading()">
+        Verify OTP
+      </button>
+    </div>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+</section>

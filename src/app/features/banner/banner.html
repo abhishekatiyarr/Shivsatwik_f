@@ -1,0 +1,36 @@
+<div class="banner">
+
+  <!-- Slides -->
+  <div
+    class="slides"
+    [style.transform]="'translateX(-' + currentIndex() * 100 + '%)'"
+  >
+    @for (img of images(); track img) {
+      <div class="slide">
+        <img [src]="img" alt="Homestay Banner" />
+      </div>
+    }
+  </div>
+
+  <!-- Overlay Text -->
+  <div class="overlay">
+    <h1>Shivsatwik Homestay</h1>
+    <p>Comfort • Calm • Premium Stay</p>
+  </div>
+
+  <!-- Arrows -->
+  <button class="nav prev" (click)="prev()">‹</button>
+  <button class="nav next" (click)="next()">›</button>
+
+  <!-- Dots -->
+  <div class="dots">
+    @for (img of images(); let i = $index; track i) {
+      <span
+        class="dot"
+        [class.active]="i === currentIndex()"
+        (click)="goTo(i)"
+      ></span>
+    }
+  </div>
+
+</div>

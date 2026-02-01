@@ -1,0 +1,55 @@
+<section class="contact">
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <p class="subtitle">We’d love to hear from you. Reach out for bookings or queries.</p>
+
+    <div class="contact-grid">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="map">
+          <iframe
+            src="https://www.google.com/maps?q=25.2495484,82.9497205&output=embed"
+            width="100%"
+            height="260"
+            style="border: 0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+        <p>📞 +91 7379647996</p>
+        <p>✉️ stay@Shivsatwikhomestay.com</p>
+        <p>🕒 Check-in: 12 PM | Check-out: 11 AM</p>
+      </div>
+
+      <!-- Contact Form -->
+      <form (ngSubmit)="submit()" #contactForm="ngForm">
+        <input
+          type="text"
+          placeholder="Your Name"
+          name="name"
+          required
+          [(ngModel)]="contact.name"
+        />
+
+        <input
+          type="email"
+          placeholder="Your Email"
+          name="email"
+          required
+          [(ngModel)]="contact.email"
+        />
+
+        <textarea
+          rows="4"
+          placeholder="Your Message"
+          name="message"
+          required
+          [(ngModel)]="contact.message"
+        ></textarea>
+
+        <button type="submit" [disabled]="contactForm.invalid">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>

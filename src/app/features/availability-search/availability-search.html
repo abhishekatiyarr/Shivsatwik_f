@@ -1,0 +1,56 @@
+<div class="search-bar">
+
+  <!-- Unit Type -->
+  <div class="field">
+    <label>Type</label>
+    <select
+      [disabled]="checking()"
+      (change)="unitTypeId.set(+$any($event.target).value)">
+      <option value="" disabled selected>Select Room Type</option>
+      <option value="1">1 BHK</option>
+      <option value="2">2 BHK</option>
+      <option value="3">3 BHK</option>
+      <option value="4">Single Room</option>
+    </select>
+  </div>
+
+  <!-- Check In -->
+  <div class="field">
+    <label>Check In</label>
+    <input
+      type="date"
+      [min]="today()"
+      [disabled]="checking()"
+      (change)="checkIn.set($any($event.target).value)" />
+  </div>
+
+  <!-- Check Out -->
+  <div class="field">
+    <label>Check Out</label>
+    <input
+      type="date"
+      [min]="minCheckOut()"
+      [disabled]="checking()"
+      (change)="checkOut.set($any($event.target).value)" />
+  </div>
+
+  <!-- Quantity -->
+  <div class="field">
+    <label>Quantity</label>
+    <input
+      type="number"
+      min="1"
+      [disabled]="checking()"
+      [value]="quantity()"
+      (input)="quantity.set(+$any($event.target).value)" />
+  </div>
+
+  <!-- Search Button -->
+  <button
+    class="search-btn"
+    [disabled]="isSearchDisabled()"
+    (click)="search()">
+    {{ checking() ? 'Checking availability…' : 'Search Availability' }}
+  </button>
+
+</div>

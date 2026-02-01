@@ -1,0 +1,122 @@
+/* .no-availability {
+  margin: 40px auto;
+  max-width: 600px;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.no-availability h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.no-availability p {
+  font-size: 15px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.no-availability button {
+  background-color: #2f7d64;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.no-availability button:hover {
+  background-color: #256653;
+}
+
+
+ */
+
+
+ .availability-status {
+  margin: 30px auto;
+  max-width: 720px;
+  text-align: center;
+}
+
+.status {
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.status.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.status.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+.reset-btn {
+  background: #2f7d64;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reset-wrapper {
+  margin: 20px 0 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.availability-message {
+  margin: 30px auto;
+  max-width: 700px;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.availability-message h3 {
+  margin-bottom: 10px;
+}
+
+.availability-message p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.availability-message.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.availability-message.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #bbf7d0;
+}

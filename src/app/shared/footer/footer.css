@@ -1,0 +1,151 @@
+/* =======================
+   FOOTER BASE
+======================= */
+.footer {
+  background-color: #1e2a24;
+  color: #e6e6e6;
+  padding: 56px 20px 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =======================
+   FOOTER GRID
+======================= */
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 36px;
+}
+
+/* =======================
+   LOGO FIX (IMPORTANT)
+======================= */
+.footer-about .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.footer-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 6px;
+}
+
+/* Optional brand name next to logo (future-proof) */
+.footer-about h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #b6d7b9;
+  margin: 0;
+}
+
+/* =======================
+   TEXT REFINEMENT
+======================= */
+.footer p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 8px;
+  color: #d1d5db;
+}
+
+/* =======================
+   HEADINGS
+======================= */
+.footer h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: #b6d7b9;
+}
+
+/* =======================
+   LINKS
+======================= */
+.footer a {
+  color: #d9d9d9;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #a3c9a8;
+}
+
+/* =======================
+   LISTS
+======================= */
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+/* =======================
+   SOCIAL LINKS
+======================= */
+.social-icons a {
+  display: inline-block;
+  margin-right: 14px;
+  margin-bottom: 6px;
+}
+
+/* =======================
+   POLICY LINKS
+======================= */
+.footer-policy {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.footer-policy span {
+  margin: 0 8px;
+  color: #777;
+}
+
+/* =======================
+   LOCATION LINK
+======================= */
+.location a {
+  color: #d9d9d9;
+}
+
+.location a:hover {
+  color: #a3c9a8;
+  text-decoration: underline;
+}
+
+/* =======================
+   FOOTER BOTTOM
+======================= */
+.footer-bottom {
+  text-align: center;
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid #2f4036;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.footer-logo {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* 
+.footer-logo {
+  background-color: transparent;
+  padding: 0;
+} */

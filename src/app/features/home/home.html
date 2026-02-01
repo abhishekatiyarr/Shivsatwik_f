@@ -1,0 +1,45 @@
+<app-banner></app-banner>
+
+<app-availability-search
+  (availabilityChecked)="onAvailabilityChecked($event)">
+</app-availability-search>
+
+@if (loading()) {
+  <p class="loading">Loading homestay...</p>
+}
+
+@if (!loading() && homestay()) {
+
+  @if (viewState() !== 'INITIAL') {
+    <div class="reset-wrapper">
+      <button class="reset-btn" (click)="resetHome()">
+        ← Back to Homepage
+      </button>
+    </div>
+  }
+
+  <app-flat-cards
+    [homestay]="homestay()"
+    [loading]="loading()"
+    [showBookNow]="viewState() === 'FILTERED_AVAILABLE'"
+    [checkIn]="lastSearch().checkIn"
+    [checkOut]="lastSearch().checkOut"
+    [quantity]="lastSearch().quantity">
+  </app-flat-cards>
+
+  @if (viewState() === 'FILTERED_NOT_AVAILABLE') {
+    <div class="availability-message error">
+      <h3>No rooms available for selected criteria</h3>
+      <p>
+        Try changing dates, room type, or quantity.
+      </p>
+    </div>
+  }
+
+  @if (viewState() === 'FILTERED_AVAILABLE') {
+    <div class="availability-message success">
+      <h3>Rooms available 🎉</h3>
+      <p>You can proceed with booking below.</p>
+    </div>
+  }
+}

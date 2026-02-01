@@ -1,0 +1,76 @@
+<nav class="navbar">
+  <div class="nav-container">
+
+    <!-- Logo + Brand -->
+    <div class="brand" routerLink="/" (click)="closeMenu()">
+      <img
+        src="logo.jpeg"
+        alt="Shivsatwik Homestay"
+        class="nav-logo"
+      />
+      <span class="brand-name">Shivsatwik Homestay</span>
+    </div>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" (click)="toggleMenu()">☰</div>
+
+    <!-- Nav Links -->
+    <ul class="nav-links" [class.open]="isMenuOpen">
+
+      <!-- Back to Home (only when not on home) -->
+      @if (!isHomeRoute) {
+        <li>
+          <a routerLink="/" (click)="closeMenu()">← Back to Home</a>
+        </li>
+      }
+
+      <li>
+        <a
+          routerLink="/about"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+        >
+          About
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/contact"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+        >
+          Contact
+        </a>
+      </li>
+
+      <!-- Login / Logout -->
+      @if (!user) {
+        <li class="cta">
+          <button
+            type="button"
+            class="login-btn"
+            (click)="openLogin()"
+          >
+            Login
+          </button>
+        </li>
+      } @else {
+        <li class="cta user-cta">
+          <span class="user-name">
+            Hi, {{ user.phone }}!
+          </span>
+
+          <button
+            type="button"
+            class="logout-btn"
+            (click)="doLogout()"
+          >
+            Logout
+          </button>
+        </li>
+      }
+
+    </ul>
+  </div>
+</nav>

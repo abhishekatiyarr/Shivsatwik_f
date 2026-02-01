@@ -1,0 +1,94 @@
+/* =========================
+   OTP PAGE WRAPPER
+========================= */
+.otp-page {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px 28px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* =========================
+   HEADING
+========================= */
+.otp-page h2 {
+  margin-bottom: 24px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.otp-page input[type="tel"],
+.otp-input input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.otp-page input:focus {
+  border-color: #2f7d64;
+  box-shadow: 0 0 0 2px rgba(47, 125, 100, 0.15);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.otp-page button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2f7d64;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.otp-page button:hover:not(:disabled) {
+  background-color: #256653;
+  transform: translateY(-1px);
+}
+
+.otp-page button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* =========================
+   OTP SECTION
+========================= */
+.otp-input {
+  margin-top: 20px;
+}
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+.error {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #dc2626;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 480px) {
+  .otp-page {
+    margin: 40px 16px;
+    padding: 28px 20px;
+  }
+}

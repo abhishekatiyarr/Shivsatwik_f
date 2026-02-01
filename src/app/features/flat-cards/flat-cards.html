@@ -1,0 +1,77 @@
+@if (loading) {
+  <p class="loading">Loading homestay...</p>
+}
+
+@if (homestay; as h) {
+
+<section class="homestay">
+
+  <!-- Homestay Header -->
+  <div class="homestay-header">
+    <h1>{{ h.name }}</h1>
+    <p class="desc">{{ h.description }}</p>
+
+    <p class="address">
+      📍 {{ h.address }}, {{ h.city }}, {{ h.state }} - {{ h.pincode }}
+    </p>
+
+    <p class="time">
+      🕒 Check-in: {{ h.checkInTime.slice(0,5) }}
+      |
+      Check-out: {{ h.checkOutTime.slice(0,5) }}
+    </p>
+  </div>
+
+  <!-- Units -->
+  <div class="units">
+    <h2>Available Stays</h2>
+
+    @for (unit of h.unitTypes; track unit.id) {
+
+      <div class="unit-card with-image">
+
+        <!-- Image -->
+        <div class="unit-thumb">
+          <img
+            [src]="'1.jpeg'"
+            alt="{{ unit.title }}"
+          />
+        </div>
+
+        <!-- Details -->
+        <div class="unit-details">
+
+          <h3>{{ unit.title }} ({{ unit.type }})</h3>
+          <p>{{ unit.description }}</p>
+
+          <div class="unit-info">
+            <span>🛏 Bedrooms: {{ unit.bedrooms }}</span>
+            <span>🛁 Bathrooms: {{ unit.bathrooms }}</span>
+            <span>👥 Max Guests: {{ unit.maxGuests }}</span>
+          </div>
+
+          <div class="unit-extra">
+            <span>🏠 Total Units: {{ unit.totalUnits }}</span>
+            <span>💰 ₹ {{ unit.basePricePerNight }} / night</span>
+          </div>
+
+          <!-- ✅ Book Now ONLY after search -->
+          @if (showBookNow) {
+            <div class="unit-footer">
+              <button
+                class="book-btn"
+                (click)="onBookNow(unit)">
+                Book Now
+              </button>
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    }
+  </div>
+
+</section>
+}

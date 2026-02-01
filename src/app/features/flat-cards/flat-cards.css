@@ -1,0 +1,274 @@
+/* =======================
+   GLOBAL
+======================= */
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+/* =======================
+   LOADING
+======================= */
+.loading {
+  padding: 40px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* =======================
+   HOMESTAY CONTAINER
+======================= */
+.homestay {
+  max-width: 1280px;
+  margin: auto;
+  padding: 48px 24px;
+}
+
+/* =======================
+   HEADER
+======================= */
+/* .homestay-header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 24px;
+}
+
+.homestay-header h1 {
+  font-size: 38px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1f2937;
+}
+
+.desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5563;
+  max-width: 900px;
+}
+
+.address,
+.time {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
+} */
+
+/* =======================
+   HOMESTAY HEADER (REFINED)
+======================= */
+.homestay-header {
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e5e7eb;
+  max-width: 900px;
+}
+
+.homestay-header h1 {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+
+.homestay-header .desc {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #4b5563;
+  margin-bottom: 18px;
+}
+
+/* Address + Time */
+.homestay-header .address,
+.homestay-header .time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+/* Slight separation */
+.homestay-header .time {
+  margin-top: 4px;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 768px) {
+  .homestay-header {
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+  }
+
+  .homestay-header h1 {
+    font-size: 32px;
+  }
+
+  .homestay-header .desc {
+    font-size: 15px;
+  }
+}
+
+
+/* =======================
+   UNITS LIST
+======================= */
+.units {
+  margin-top: 40px;
+}
+
+/* =======================
+   UNIT CARD
+======================= */
+.unit-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* =======================
+   UNIT CONTENT
+======================= */
+.unit-card h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.unit-info span,
+.unit-extra span {
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.unit-extra {
+  margin-top: 10px;
+}
+
+/* =======================
+   UNIT FOOTER (PRICE + CTA)
+======================= */
+.unit-footer {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.unit-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.unit-price span {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+/* =======================
+   BOOK BUTTON
+======================= */
+.book-btn {
+  background-color: #2f7d64;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.book-btn:hover {
+  background-color: #256653;
+  transform: translateY(-1px);
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 768px) {
+  .unit-card {
+    flex-direction: column;
+  }
+
+  .unit-footer {
+    text-align: left;
+    margin-top: 16px;
+  }
+}
+
+/* =======================
+   UNIT IMAGE (PROFESSIONAL)
+======================= */
+
+/* Enable image layout */
+.unit-card.with-image {
+  align-items: flex-start;
+}
+
+/* Image container */
+.unit-thumb {
+  width: 220px;
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+  flex-shrink: 0;
+}
+
+/* Image itself */
+.unit-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content wrapper */
+.unit-details {
+  flex: 1;
+}
+
+/* Small spacing refinement */
+.unit-details h3 {
+  margin-top: 0;
+}
+
+/* =======================
+   RESPONSIVE IMAGE
+======================= */
+@media (max-width: 768px) {
+  .unit-card.with-image {
+    flex-direction: column;
+  }
+
+  .unit-thumb {
+    width: 100%;
+    height: 220px;
+  }
+}
