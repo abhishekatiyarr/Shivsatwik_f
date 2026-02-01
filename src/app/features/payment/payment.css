@@ -1,0 +1,137 @@
+/* ===============================
+   Page Layout
+================================ */
+.payment-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 48px 16px;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+.payment-page h2 {
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ===============================
+   Card
+================================ */
+.payment-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px 20px;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.08),
+    0 6px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   Rows
+================================ */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.row span {
+  color: #6b7280;
+}
+
+.row strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ===============================
+   Divider
+================================ */
+.divider {
+  margin: 14px 0;
+  border-top: 1px dashed #e5e7eb;
+}
+
+/* ===============================
+   Status Message
+================================ */
+.status {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ===============================
+   Buttons
+================================ */
+.pay-btn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  border-radius: 14px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Success */
+.pay-btn.success {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #ffffff;
+}
+
+.pay-btn.success:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(22, 163, 74, 0.35);
+}
+
+/* Failure */
+.pay-btn.failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pay-btn.failed:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+/* Disabled */
+.pay-btn:disabled {
+  background: #9ca3af;
+  color: #ffffff;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ===============================
+   Mobile
+================================ */
+@media (max-width: 420px) {
+  .payment-card {
+    padding: 18px 16px;
+  }
+
+  .row {
+    font-size: 13px;
+  }
+
+  .pay-btn {
+    font-size: 13px;
+  }
+}

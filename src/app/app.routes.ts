@@ -5,6 +5,7 @@ import { About } from './features/about/about';
 import { Notfound } from './features/notfound/notfound';
 import { Booking } from './features/booking/booking';
 import { Contact } from './features/contact/contact';
+import { Payment } from './features/payment/payment';
 
 
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
   {path:'about',component:About},
   {path:'contact',component:Contact},
   {path:'booking',component:Booking},
+  {path:'payment',component:Payment},
   {path:'**',component:Notfound}
     
 ];

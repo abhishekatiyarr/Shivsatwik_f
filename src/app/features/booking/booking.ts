@@ -152,7 +152,15 @@ export class Booking implements OnInit {
 
     expectedAmount: price.totalAmount,
   }).subscribe({
-    next: () => this.router.navigate(['/payment']),
+    next: (res:any) =>{ 
+       
+      console.log('✅ Booking API response:', res);
+
+      // 🔥 THIS IS MANDATORY
+      this.bookingIntent.saveConfirmation(res);
+
+
+      this.router.navigate(['/payment'])},
     error: () => console.log('❌ Booking failed'),
   });
 }

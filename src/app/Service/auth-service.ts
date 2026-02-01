@@ -9,6 +9,8 @@ export interface User {
   phone: string;
 }
 
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +30,9 @@ export class AuthService {
       const phone = localStorage.getItem('phone');
       const name = localStorage.getItem('name');
 
+
+console.log(  'AuthService initialized. User logged in:', name);
+
       if (token && phone && name) {
         this.user.set({ name, phone });
       }
@@ -43,7 +48,8 @@ export class AuthService {
   }
 
   // 🔐 Verify OTP
-  verifyOtp(phone: string, otp: string, name?: string) {
+  verifyOtp(phone: string, otp: string, name: string) {
+    console.log('Verifying OTP for phone:', phone, 'name:', name);
     return this.http.post<any>(
       'http://localhost:5085/api/Auth/verify-otp',
       { phone, otp, name }
@@ -52,19 +58,23 @@ export class AuthService {
 
   // ✅ Login success
   handleLoginSuccess(res: any) {
+
+    console.log('handleLoginSuccess response:', res);
     if (!res?.token) return;
 
     const user: User = {
-      name: res.name,
+      name: res.fullName,
       phone: res.phone,
     };
+
+    console.log('Login successful for user:', user);
 
     this.user.set(user);
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('token', res.token);
       localStorage.setItem('phone', res.phone);
-      localStorage.setItem('name', res.name);
+      localStorage.setItem('name', res.fullName);
     }
 
     this.bookingIntent.verifyOtp();

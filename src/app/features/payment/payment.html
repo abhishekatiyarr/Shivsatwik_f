@@ -1,1 +1,51 @@
-<p>payment works!</p>
+<section class="payment-page">
+
+  <h2>Confirm Payment</h2>
+
+  @if (intent() && confirmation()) {
+    <div class="payment-card">
+
+      <div class="row">
+        <span>Booking Code</span>
+        <strong>{{ confirmation()!.bookingCode }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Room</span>
+        <strong>{{ intent()!.title }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Total Guests</span>
+        <strong>{{ intent()!.totalGuests }}</strong>
+      </div>
+
+      <div class="row">
+        <span>Amount</span>
+        <strong>₹{{ confirmation()!.amount }}</strong>
+      </div>
+
+      <div class="divider"></div>
+
+      @if (message) {
+        <p class="status">{{ message }}</p>
+      }
+
+      <button
+        class="pay-btn success"
+        [disabled]="loading"
+        (click)="paySuccess()">
+        ✅ Pay & Confirm
+      </button>
+
+      <button
+        class="pay-btn failed"
+        [disabled]="loading"
+        (click)="payFailed()">
+        ❌ Simulate Payment Failure
+      </button>
+
+    </div>
+  }
+
+</section>
