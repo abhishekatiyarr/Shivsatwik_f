@@ -1,7 +1,5 @@
 import { Injectable, signal, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { BookingIntent } from './booking-intent';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface User {
@@ -9,37 +7,42 @@ export interface User {
   phone: string;
 }
 
-
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  user = signal<User | null>(null);
+  private userSignal = signal<User | null>(null);
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private bookingIntent: BookingIntent,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    // ✅ ONLY run in browser
+    // ✅ Restore user info only (NO token)
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
       const phone = localStorage.getItem('phone');
       const name = localStorage.getItem('name');
 
-
-console.log(  'AuthService initialized. User logged in:', name);
-
-      if (token && phone && name) {
-        this.user.set({ name, phone });
+      if (phone && name) {
+        this.userSignal.set({ name, phone });
       }
     }
   }
 
-  // 🔐 Send OTP
+  /* =========================
+     AUTH STATE
+  ========================== */
+  isLoggedIn(): boolean {
+    return !!this.userSignal();
+  }
+
+  user() {
+    return this.userSignal();
+  }
+
+  /* =========================
+     OTP FLOW
+  ========================== */
   sendOtp(phone: string) {
     return this.http.post(
       'http://localhost:5085/api/Auth/send-otp',
@@ -47,60 +50,50 @@ console.log(  'AuthService initialized. User logged in:', name);
     );
   }
 
-  // 🔐 Verify OTP
   verifyOtp(phone: string, otp: string, name: string) {
-    console.log('Verifying OTP for phone:', phone, 'name:', name);
     return this.http.post<any>(
       'http://localhost:5085/api/Auth/verify-otp',
-      { phone, otp, name }
+      { phone, otp, name },
+      { withCredentials: true } // 🔐 cookie set here
     );
   }
 
-  // ✅ Login success
+  /* =========================
+     LOGIN SUCCESS
+     (NO NAVIGATION HERE)
+  ========================== */
   handleLoginSuccess(res: any) {
-
-    console.log('handleLoginSuccess response:', res);
-    if (!res?.token) return;
-
     const user: User = {
       name: res.fullName,
       phone: res.phone,
     };
 
-    console.log('Login successful for user:', user);
-
-    this.user.set(user);
+    this.userSignal.set(user);
 
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('phone', res.phone);
-      localStorage.setItem('name', res.fullName);
-    }
-
-    this.bookingIntent.verifyOtp();
-
-    if (this.bookingIntent.fromBooking()) {
-      this.router.navigate(['/booking']);
-    } else {
-      this.router.navigate(['/']);
+      localStorage.setItem('phone', user.phone);
+      localStorage.setItem('name', user.name);
     }
   }
 
-  // 🔓 Logout
+  /* =========================
+     LOGOUT
+  ========================== */
   logout() {
-    this.user.set(null);
+    this.forceLogout();
+
+    fetch('http://localhost:5085/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+  }
+
+  forceLogout() {
+    this.userSignal.set(null);
 
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('token');
       localStorage.removeItem('phone');
       localStorage.removeItem('name');
     }
-
-    this.router.navigate(['/']);
-  }
-
-  // 🔍 Login status
-  isLoggedIn(): boolean {
-    return !!this.user();
   }
 }

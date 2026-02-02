@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-flat-cards',
-  imports: [],
+  standalone: true,
   templateUrl: './flat-cards.html',
   styleUrl: './flat-cards.css',
 })
 export class FlatCards {
- @Input() homestay!: Homestay | null;
+
+  @Input() homestay!: Homestay | null;
   @Input() loading = false;
   @Input() showBookNow = false;
 
@@ -40,9 +41,10 @@ export class FlatCards {
       TotalPrice: unit.basePricePerNight * nights * this.quantity,
     };
 
+    // 🔥 SAVED SAFELY
     this.bookingIntent.saveIntent(intent);
 
-    // 🔐 AUTH CHECK HERE (single source of truth)
+    // 🔐 AUTH DECISION
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['/booking']);
     } else {

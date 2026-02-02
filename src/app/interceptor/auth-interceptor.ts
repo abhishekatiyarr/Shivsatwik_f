@@ -1,21 +1,39 @@
-import { inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { AuthService } from '../Service/auth-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const platformId = inject(PLATFORM_ID);
-  
-  // Only run localStorage logic if we are in the browser
-  if (isPlatformBrowser(platformId)) {
-    // const token = localStorage.getItem('token');
-    const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiR1VFU1QiLCJleHAiOjE3Njk5NTc4NzMsImlzcyI6IlNoaXZTYXR2aWtBUEkiLCJhdWQiOiJTaGl2U2F0dmlrVXNlcnMifQ.M_6bkfFBz_JNQSBqj5aGYXtnqxLx6vqHObZ1fSGmNS0"
-    if (token) {
-      const authReq = req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
-      });
-      return next(authReq);
-    }
-  }
 
-  return next(req);
+  const router = inject(Router);
+  const authService = inject(AuthService);
+
+  const authReq = req.clone({
+    withCredentials: true // 🔐 cookie always sent
+  });
+
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+
+      if (error.status === 401) {
+        console.warn('🔒 Session expired → auto logout');
+
+        // 🔥 clear frontend state
+        authService.forceLogout();
+
+        // 🔥 optional: tell backend to delete cookie
+        fetch('http://localhost:5085/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+
+        router.navigate(['/login'], {
+          queryParams: { sessionExpired: true }
+        });
+      }
+
+      return throwError(() => error);
+    })
+  );
 };

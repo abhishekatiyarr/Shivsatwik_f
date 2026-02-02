@@ -97,16 +97,16 @@ export class Booking implements OnInit {
 }
 
   /* 🔥 backend price preview */
-  private callPricePreview(totalGuests: number) {
+  private callPricePreview(TotalGuests: number) {
     const intent = this.intent();
     if (!intent) return;
 
     const payload = {            // price preview ko bhejte h request k sath
-      unitTypeId: intent.unitTypeId,
-      quantity: intent.quantity,
-      checkIn: intent.checkIn,
-      checkOut: intent.checkOut,
-      totalGuests,
+      UnitTypeId: intent.unitTypeId,
+      Quantity: intent.quantity,
+      CheckIn: intent.checkIn,
+      CheckOut: intent.checkOut,
+      TotalGuests,
     };
 
     this.bookingService.previewPrice(payload).subscribe({               //response k liye h price-preview k 
@@ -142,15 +142,14 @@ export class Booking implements OnInit {
   this.bookingIntent.updateGuests(this.guests());
 
   this.bookingService.createBooking({
-    unitTypeId: intent.unitTypeId,
-    quantity: intent.quantity,
-    checkIn: intent.checkIn,
-    checkOut: intent.checkOut,
-
+    UnitTypeId: intent.unitTypeId,
+    Quantity: intent.quantity,
+    CheckIn: intent.checkIn,
+    CheckOut: intent.checkOut,
     TotalGuests: this.guests(),     // ✅ MATCHES BACKEND
     Children: this.children(),      // ✅ MATCHES BACKEND
 
-    expectedAmount: price.totalAmount,
+    ExpectedAmount: price.totalAmount,
   }).subscribe({
     next: (res:any) =>{ 
        

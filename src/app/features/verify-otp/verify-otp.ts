@@ -1,16 +1,16 @@
 import { Component, signal, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../Service/auth-service';
 import { BookingIntent } from '../../Service/booking-intent';
 
 @Component({
   selector: 'app-verify-otp',
   standalone: true,
-  imports: [],
   templateUrl: './verify-otp.html',
   styleUrl: './verify-otp.css',
 })
 export class VerifyOtp implements OnInit {
+
   phone = signal('');
   otp = signal('');
   name = signal('');
@@ -22,29 +22,34 @@ export class VerifyOtp implements OnInit {
   constructor(
     private auth: AuthService,
     private bookingIntent: BookingIntent,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // 🔐 If user already logged in → redirect smartly
-    if (this.auth.isLoggedIn()) {
-      if (this.bookingIntent.fromBooking()) {
-        this.router.navigate(['/booking']);
-      } else {
-        this.router.navigate(['/']);
+
+    // 🔥 SESSION EXPIRED MESSAGE
+    this.route.queryParams.subscribe(params => {
+      if (params['sessionExpired']) {
+        this.error.set('Session expired. Please login again.');
       }
+    });
+
+    // 🔐 Already logged in → go smartly
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate(
+        this.bookingIntent.intent() ? ['/booking'] : ['/']
+      );
       return;
     }
 
-    // 🔒 Protect invalid booking OTP access
-    if (
-      this.bookingIntent.fromBooking() &&
-      !this.bookingIntent.intent()
-    ) {
+    // ❌ Invalid direct OTP access
+    if (!this.bookingIntent.intent() && !this.auth.isLoggedIn()) {
       this.router.navigate(['/']);
     }
   }
 
+  // ================= SEND OTP =================
   sendOtp() {
     if (!this.phone()) {
       this.error.set('Phone number is required');
@@ -66,31 +71,41 @@ export class VerifyOtp implements OnInit {
     });
   }
 
+  // ================= VERIFY OTP =================
   verifyOtp() {
     if (this.otp().length !== 6) {
       this.error.set('Enter valid 6-digit OTP');
       return;
     }
 
+    if (!this.name()) {
+      this.error.set('Name is required');
+      return;
+    }
+
     this.loading.set(true);
     this.error.set('');
 
-    this.auth
-      .verifyOtp(this.phone(), this.otp(), this.name())
-      .subscribe({
-        next: (res) => {
-          if (res?.verified) {
-            // ✅ AuthService handles user + redirect
-            this.auth.handleLoginSuccess(res);
+    this.auth.verifyOtp(this.phone(), this.otp(), this.name()).subscribe({
+      next: (res) => {
+        if (res?.verified) {
+          this.auth.handleLoginSuccess(res);
+
+          // 🔥 FINAL FIX — SMART REDIRECT
+          if (this.bookingIntent.intent()) {
+            this.router.navigate(['/booking']);
           } else {
-            this.error.set('Invalid OTP');
+            this.router.navigate(['/']);
           }
-          this.loading.set(false);
-        },
-        error: () => {
-          this.error.set('OTP verification failed');
-          this.loading.set(false);
-        },
-      });
+        } else {
+          this.error.set('Invalid OTP');
+        }
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('OTP verification failed');
+        this.loading.set(false);
+      },
+    });
   }
 }

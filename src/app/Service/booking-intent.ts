@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 
 /* =========================
-   BOOKING INTENT (SEARCH → BOOKING → PAYMENT)
+   BOOKING DATA
 ========================== */
-
-/**
- * BookingData
- * Guests        -> base allowed guests (read-only, from unit type)
- * totalGuests   -> user selected guests (runtime, FINAL)
- */
 export interface BookingData {
   unitTypeId: number;
   title: string;
@@ -16,18 +10,17 @@ export interface BookingData {
   checkOut: string;
   quantity: number;
 
-  Guests: number;          // base allowed guests (per unit)
+  Guests: number;           // base allowed guests (per unit)
   PricePerNight: number;
   Nights: number;
   TotalPrice: number;
 
-  totalGuests?: number;    // ✅ user-selected guests (FINAL)
+  totalGuests?: number;     // user-selected guests (FINAL)
 }
 
-/**
- * BookingConfirmation
- * Backend response after createBooking
- */
+/* =========================
+   BOOKING CONFIRMATION
+========================== */
 export interface BookingConfirmation {
   bookingId: number;
   bookingCode: string;
@@ -41,80 +34,62 @@ export interface BookingConfirmation {
 })
 export class BookingIntent {
 
-  /* =========================
-     INTERNAL STATE
-  ========================== */
   private _intent: BookingData | null = null;
   private _confirmation: BookingConfirmation | null = null;
-  private _fromBooking = false;
 
   /* =========================
-     SAVE INTENT (FROM SEARCH PAGE)
+     SAVE INTENT (FROM SEARCH)
   ========================== */
   saveIntent(data: BookingData) {
     this._intent = {
       ...data,
-      // safety: initial totalGuests = base guests
       totalGuests: data.totalGuests ?? data.Guests,
     };
-    this._fromBooking = true;
   }
 
   /* =========================
-     UPDATE GUESTS (FROM BOOKING PAGE)
+     UPDATE GUESTS (BOOKING PAGE)
   ========================== */
   updateGuests(totalGuests: number) {
     if (!this._intent) return;
 
     this._intent = {
       ...this._intent,
-      totalGuests,          // ✅ FINAL SOURCE OF TRUTH
-      Guests: this._intent.Guests, // base guests unchanged
+      totalGuests,
     };
-
-    console.log('from booking intent totalGuests:', totalGuests);
-    console.log('from booking intent full intent:', this._intent);
   }
 
   /* =========================
-     SAVE BOOKING CONFIRMATION
-     (AFTER CREATE BOOKING API)
+     CONFIRMATION (BACKEND)
   ========================== */
   saveConfirmation(data: BookingConfirmation) {
     this._confirmation = { ...data };
   }
 
   /* =========================
-     READ INTENT
+     READERS
   ========================== */
   intent(): BookingData | null {
     return this._intent;
   }
+  
 
-  /* =========================
-     READ CONFIRMATION
-  ========================== */
   confirmation(): BookingConfirmation | null {
     return this._confirmation;
   }
 
   /* =========================
-     LOGIN FLOW HELPERS
+     HELPERS
   ========================== */
-  fromBooking(): boolean {
-    return this._fromBooking;
-  }
-
-  verifyOtp() {
-    this._fromBooking = false;
+  hasIntent(): boolean {
+    return !!this._intent;
   }
 
   /* =========================
-     CLEAR AFTER PAYMENT / CANCEL
+     CLEAR (AFTER PAYMENT / CANCEL)
   ========================== */
   clear() {
     this._intent = null;
     this._confirmation = null;
-    this._fromBooking = false;
   }
 }

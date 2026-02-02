@@ -5,38 +5,40 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BookingService {
+
   private readonly baseUrl = 'http://localhost:5085/api/bookings';
 
   constructor(private http: HttpClient) {}
 
-  // 🔹 PRICE PREVIEW (Check Price)
+  // 🔐 PRICE PREVIEW (PROTECTED)
   previewPrice(body: {
-    unitTypeId: number;
-    quantity: number;
-    checkIn: string;
-    checkOut: string;
-    totalGuests: number;
+    UnitTypeId: number;
+    Quantity: number;
+    CheckIn: string;
+    CheckOut: string;
+    TotalGuests: number;
   }) {
     return this.http.post(
       `${this.baseUrl}/price-preview`,
-      body
+      body,
+      { withCredentials: true } // 🔐 cookie
     );
   }
 
-  // 🔹 CREATE BOOKING
+  // 🔐 CREATE BOOKING (PROTECTED)
   createBooking(body: {
-    unitTypeId: number;
-    quantity: number;
-    checkIn: string;
-    checkOut: string;
+    UnitTypeId: number;
+    Quantity: number;
+    CheckIn: string;
+    CheckOut: string;
     TotalGuests: number;
-   Children:number,
-    expectedAmount: number;
+    Children: number;
+    ExpectedAmount: number;
   }) {
-    console.log('this i sthe main part which i need to see for error yrr from service ',body)
     return this.http.post(
       this.baseUrl,
-      body
+      body,
+      { withCredentials: true } // 🔐 cookie
     );
   }
 }
