@@ -35,7 +35,7 @@ export class FlatCards {
       checkIn: this.checkIn,
       checkOut: this.checkOut,
       quantity: this.quantity,
-      Guests: unit.maxGuests,
+      Guests: unit.maxGuestsAllowed,
       PricePerNight: unit.basePricePerNight,
       Nights: nights,
       TotalPrice: unit.basePricePerNight * nights * this.quantity,

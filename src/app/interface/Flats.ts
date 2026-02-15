@@ -18,7 +18,7 @@ export interface UnitType {
   type: string;
   title: string;
   description: string;
-  maxGuests: number;
+  maxGuestsAllowed: number;
   bedrooms: number;
   bathrooms: number;
   basePricePerNight: number;

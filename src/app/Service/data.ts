@@ -16,6 +16,8 @@ export class Data {
 
   // 🔓 PUBLIC
   getHomestay(): Observable<Homestay> {
+    console.log('Fetching homestay data from API...');
+    
     return this.http.get<Homestay>(this.homestayApiUrl);
   }
 

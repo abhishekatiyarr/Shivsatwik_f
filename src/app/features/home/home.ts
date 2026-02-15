@@ -50,6 +50,7 @@ export class Home {
   ngOnInit(): void {
     this.homestayService.getHomestay().subscribe({
       next: (data) => {
+       
         this.fullHomestay.set(data);
         this.homestay.set(data);
         this.viewState.set('INITIAL');
